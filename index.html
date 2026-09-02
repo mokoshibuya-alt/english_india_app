@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>インド出張 英語カード</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>インド出張 英語カード</h1>
+    <p>音が先、文字は答え合わせ。空港→オフィス→打ち合わせ→食事の一日ぶん</p>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span>進捗</span>
+      <span id="counter">1 / 30</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-bar" style="width: 3.3%"></div>
+    </div>
+  </div>
+
+  <main>
+    <!-- 表示モード・絞り込み -->
+    <div class="control-bar">
+      <div class="mode-switcher">
+        <div class="field-group">
+          <label for="mode-select" class="control-label">モード</label>
+          <select id="mode-select" class="mode-select" onchange="onModeChange(this.value)">
+            <option value="study">通常学習</option>
+            <option value="all">全件</option>
+            <option value="new">新規</option>
+            <option value="review">復習</option>
+            <option value="ok">OK</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="scene-select" class="control-label">場面</label>
+          <select id="scene-select" class="mode-select" onchange="onSceneChange(this.value)">
+            <option value="all">一日ぜんぶ</option>
+            <option value="空港・移動">空港・移動</option>
+            <option value="オフィス">オフィス</option>
+            <option value="打ち合わせ">打ち合わせ</option>
+            <option value="食事">食事</option>
+            <option value="別れ・お礼">別れ・お礼</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="role-select" class="control-label">役</label>
+          <select id="role-select" class="mode-select" onchange="onRoleChange(this.value)">
+            <option value="all">両方</option>
+            <option value="listen">聞く(相手が言う)</option>
+            <option value="say">言う(自分が言う)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="card-jump-input" class="control-label card-jump-label">番号</label>
+          <input type="number" id="card-jump-input" class="card-jump-input" min="1" inputmode="numeric" placeholder="例: 14"
+                 onkeydown="if(event.key==='Enter'){goToCardInput()}">
+          <button class="card-jump-btn" onclick="goToCardInput()">移動</button>
+        </div>
+      </div>
+
+      <!-- 声の設定 -->
+      <div class="voice-bar">
+        <div class="field-group">
+          <label for="voice-select" class="control-label">声</label>
+          <select id="voice-select" class="mode-select" onchange="onVoiceChange(this.value)">
+            <option value="india">インド英語(自動)</option>
+            <option value="standard">通常英語(自動)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="rate-select" class="control-label">速さ</label>
+          <select id="rate-select" class="mode-select" onchange="onRateChange(this.value)">
+            <option value="0.7">ゆっくり</option>
+            <option value="0.85">ふつう</option>
+            <option value="1.0">ふだんの速さ</option>
+          </select>
+        </div>
+        <label class="autoplay-label">
+          <input type="checkbox" id="autoplay-check" onchange="onAutoplayChange(this.checked)">
+          次へ進んだら自動で読む
+        </label>
+        <div class="voice-note" id="voice-note"></div>
+      </div>
+
+      <div class="stats-bar">
+        <span class="stat-pill stat-pill-all">全件 <strong id="stat-all">0</strong></span>
+        <span class="stat-pill stat-pill-new">新規 <strong id="stat-new">0</strong></span>
+        <span class="stat-pill stat-pill-review">復習 <strong id="stat-review">0</strong></span>
+        <span class="stat-pill stat-pill-ok">OK <strong id="stat-ok">0</strong></span>
+      </div>
+    </div>
+
+    <!-- 該当カードがない場合のメッセージ -->
+    <div class="empty-state" id="empty-state" style="display:none;"></div>
+
+    <div class="card fade-in covered" id="card">
+
+      <!-- 場面・役のバッジ -->
+      <div class="badge-wrap card-badges" id="context-badges"></div>
+
+      <!-- ① 聞く -->
+      <div class="listen-zone">
+        <button class="btn-listen speak-btn" id="btn-listen" onclick="speakFull()" title="読み上げる">
+          <span class="btn-listen-icon">▶</span>
+          <span class="btn-listen-text">聞く</span>
+        </button>
+        <button class="btn-listen-slow speak-btn" id="btn-listen-slow" onclick="speakSlow()" title="ゆっくり読み上げる">🐢 ゆっくり</button>
+        <div class="listen-hint" id="listen-hint">まず音だけ。「こんな意味かな」と当ててから、めくる</div>
+      </div>
+
+      <!-- ② めくる -->
+      <div class="reveal-wrap" id="reveal-wrap">
+        <button class="btn btn-reveal" id="btn-reveal" onclick="reveal()">めくる(答えを見る)</button>
+      </div>
+
+      <!-- ③ 答え: 英文 -->
+      <div class="section-english answer-part">
+        <div class="section-label-row">
+          <div class="label">English</div>
+          <button class="speak-btn" id="speak-full" onclick="speakFull()" title="英文全体を読み上げる">🔊</button>
+        </div>
+        <div class="english-text" id="english-text"></div>
+      </div>
+
+      <!-- 日本語訳 -->
+      <div class="section-japanese answer-part">
+        <div class="label">日本語</div>
+        <div class="japanese-text" id="japanese-text"></div>
+      </div>
+
+      <!-- どんな場面で出るか -->
+      <div class="section-explanation collapsible-section answer-part" id="section-explanation">
+        <button class="collapsible-header" onclick="toggleSection('explanation')" aria-expanded="false">
+          <span class="label">どんな場面？</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="collapsible-body">
+          <div class="explanation-text" id="explanation-text"></div>
+        </div>
+      </div>
+
+      <!-- 重要単語 -->
+      <div class="section-vocab collapsible-section answer-part" id="section-vocab">
+        <button class="collapsible-header" onclick="toggleSection('vocab')" aria-expanded="false">
+          <span class="label">重要単語</span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="collapsible-body">
+          <div class="vocab-list" id="vocab-list"></div>
+        </div>
+      </div>
+
+      <!-- 英語学習メモ -->
+      <div class="section-tip collapsible-section answer-part" id="section-tip">
+        <button class="collapsible-header" onclick="toggleSection('tip')" aria-expanded="false">
+          <span class="tip-header">
+            <span class="tip-icon">💡</span>
+            <span>英語学習メモ</span>
+          </span>
+          <span class="toggle-icon">▼</span>
+        </button>
+        <div class="collapsible-body">
+          <div class="tip-text" id="learning-tip-text"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 学習状態の確認・変更 -->
+    <div class="status-bar" id="status-bar">
+      <div class="status-current">
+        <span class="status-current-label">この例文の状態:</span>
+        <span class="status-badge status-new" id="current-status-badge">新規</span>
+      </div>
+      <div class="status-actions">
+        <button class="status-btn status-btn-review" id="btn-mark-review" onclick="setCardStatus('review')">🔁 復習にする</button>
+        <button class="status-btn status-btn-ok" id="btn-mark-ok" onclick="setCardStatus('ok')">✅ OKにする</button>
+      </div>
+    </div>
+
+    <!-- ナビゲーション -->
+    <div class="nav-wrap" id="nav-wrap">
+      <button class="btn btn-secondary" id="btn-prev" onclick="goPrev()">← 前へ</button>
+      <button class="btn btn-primary" id="btn-next" onclick="goNext()">次へ →</button>
+      <button class="btn-random" id="btn-random" onclick="goRandom()" title="ランダム">🔀</button>
+    </div>
+
+    <!-- 学習データの保存・復元(端末間の引き継ぎ用) -->
+    <div class="data-io-bar">
+      <div class="data-io-label">学習データの保存・復元(端末間の引き継ぎ用)</div>
+      <div class="data-io-actions">
+        <button class="btn-io btn-export" onclick="exportState()">📤 データを書き出す</button>
+        <button class="btn-io btn-import" onclick="triggerImport()">📥 データを読み込む</button>
+      </div>
+      <input type="file" id="import-file-input" accept="application/json,.json" style="display:none" onchange="handleImportFile(event)">
+    </div>
+
+    <p class="keyboard-hint">
+      キーボード: <kbd>Space</kbd> 聞く / <kbd>Enter</kbd> めくる / <kbd>←</kbd> <kbd>→</kbd> 前後
+    </p>
+  </main>
+
+  <script src="terms.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

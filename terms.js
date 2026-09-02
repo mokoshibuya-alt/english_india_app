@@ -1,0 +1,70 @@
+// ============================================================
+// 用語データ(重要単語の意味・カタカナ発音を一元管理)
+// data.js の vocabulary は、ここのキーを参照する。
+// 新しい単語を足すときは、ここに1件追記するだけでよい。
+// ============================================================
+
+const terms = {
+  "could you":        { meaning: "〜してもらえますか(丁寧な頼み)",     katakana: "クッジュー" },
+  "take me to":       { meaning: "〜まで連れて行く",                    katakana: "テイク ミー トゥ" },
+  "sir":              { meaning: "(男性への呼びかけ)お客様・あなた",   katakana: "サー" },
+  "this way":         { meaning: "こちらへ",                            katakana: "ディス ウェイ" },
+  "how long":         { meaning: "どのくらい(時間・長さ)",              katakana: "ハウ ロング" },
+  "take":             { meaning: "(時間が)かかる",                      katakana: "テイク" },
+  "around":           { meaning: "およそ・〜くらい",                    katakana: "アラウンド" },
+  "traffic":          { meaning: "交通・渋滞",                          katakana: "トラフィック" },
+  "reservation":      { meaning: "予約",                                katakana: "レザベーション" },
+  "under my name":    { meaning: "私の名前で",                          katakana: "アンダー マイ ネーム" },
+  "nice to meet you": { meaning: "はじめまして",                        katakana: "ナイス トゥ ミーチュー" },
+  "from":             { meaning: "〜から・〜所属の",                    katakana: "フロム" },
+  "first time":       { meaning: "初めて",                              katakana: "ファースト タイム" },
+  "in India":         { meaning: "インドで",                            katakana: "イン インディア" },
+  "how was":          { meaning: "〜はどうだった?",                     katakana: "ハウ ワズ" },
+  "flight":           { meaning: "フライト・便",                        katakana: "フライト" },
+  "long":             { meaning: "長い",                                katakana: "ロング" },
+  "fine":             { meaning: "大丈夫・問題ない",                    katakana: "ファイン" },
+  "have you had":     { meaning: "〜を済ませましたか",                  katakana: "ハヴ ユー ハド" },
+  "breakfast":        { meaning: "朝食",                                katakana: "ブレックファスト" },
+  "where can I":      { meaning: "どこで〜できますか",                  katakana: "ウェア キャナイ" },
+  "get":              { meaning: "もらう・手に入れる",                  katakana: "ゲット" },
+  "say that again":   { meaning: "もう一度言う",                        katakana: "セイ ザット アゲイン" },
+  "a little":         { meaning: "少し",                                katakana: "ア リトル" },
+  "slower":           { meaning: "もっとゆっくり",                      katakana: "スローワー" },
+  "let me":           { meaning: "〜させて(自分がやる宣言)",            katakana: "レット ミー" },
+  "get back to you":  { meaning: "折り返し連絡する",                    katakana: "ゲット バック トゥ ユー" },
+  "revert":           { meaning: "返事する(インド英語)",                katakana: "リヴァート" },
+  "by tomorrow":      { meaning: "明日までに",                          katakana: "バイ トゥモロー" },
+  "do the needful":   { meaning: "必要な対応をする(インド英語)",        katakana: "ドゥ ザ ニードフル" },
+  "prepone":          { meaning: "前倒しする(インド英語)",              katakana: "プリポーン" },
+  "meeting":          { meaning: "会議",                                katakana: "ミーティング" },
+  "mean":             { meaning: "〜のことを言う・意味する",            katakana: "ミーン" },
+  "this one":         { meaning: "これ",                                katakana: "ディス ワン" },
+  "send me":          { meaning: "私に送る",                            katakana: "センド ミー" },
+  "by email":         { meaning: "メールで",                            katakana: "バイ イーメール" },
+  "in charge of":     { meaning: "〜の担当",                            katakana: "イン チャージ オブ" },
+  "data":             { meaning: "データ",                              katakana: "デイタ(インドでは「ダータ」も)" },
+  "share":            { meaning: "共有する",                            katakana: "シェア" },
+  "today itself":     { meaning: "今日のうちに(インド英語)",            katakana: "トゥデイ イットセルフ" },
+  "just to confirm":  { meaning: "確認ですが",                          katakana: "ジャスト トゥ コンファーム" },
+  "deadline":         { meaning: "締め切り",                            katakana: "デッドライン" },
+  "veg":              { meaning: "菜食(vegetarian)",                    katakana: "ヴェジ" },
+  "non-veg":          { meaning: "肉・魚あり",                          katakana: "ノン ヴェジ" },
+  "spicy":            { meaning: "辛い",                                katakana: "スパイシー" },
+  "not too":          { meaning: "〜しすぎない",                        katakana: "ノット トゥー" },
+  "have you tried":   { meaning: "〜を試したことがありますか",          katakana: "ハヴ ユー トライド" },
+  "biryani":          { meaning: "ビリヤニ(スパイス炊き込みご飯)",      katakana: "ビリヤニ" },
+  "delicious":        { meaning: "おいしい",                            katakana: "デリシャス" },
+  "called":           { meaning: "〜と呼ばれる",                        katakana: "コールド" },
+  "bottled water":    { meaning: "ボトルの水",                          katakana: "ボトルド ウォーター" },
+  "only":             { meaning: "〜だけ",                              katakana: "オンリー" },
+  "thank you for":    { meaning: "〜をありがとう",                      katakana: "サンキュー フォー" },
+  "help":             { meaning: "手助け",                              katakana: "ヘルプ" },
+  "see you":          { meaning: "またね",                              katakana: "シー ユー" },
+  "at nine":          { meaning: "9時に",                               katakana: "アット ナイン" },
+  "take care":        { meaning: "気をつけて",                          katakana: "テイク ケア" },
+  "journey":          { meaning: "旅",                                  katakana: "ジャーニー" }
+};
+
+function getTerm(key) {
+  return terms[key] || terms[String(key).toLowerCase()] || null;
+}
