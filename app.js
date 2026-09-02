@@ -16,11 +16,17 @@ function loadVoices() {
   updateVoiceNote();
 }
 
-// 女性の声を優先する。Edge/Windows の英語の声のうち女性の名前
-const FEMALE_NAMES = /aria|jenny|zira|ana\b|michelle|emma|ava|sonia|libby|maisie|hazel|susan|neerja|heera|natasha|clara|molly|samantha|karen|moira|tessa|fiona|female/i;
+// 女性の声を優先する。Windows(Edge)・iPhone・Android の英語の声の女性名
+const FEMALE_NAMES = /aria|jenny|zira|ana\b|michelle|emma|ava|sonia|libby|maisie|hazel|susan|neerja|heera|natasha|clara|molly|samantha|karen|moira|tessa|fiona|veena|isha|nicky|serena|martha|catherine|kate|allison|zoe|female/i;
+
+// 男性とはっきり分かる名前(iPhoneのインド英語 Rishi など)は自動選びで避ける
+const MALE_NAMES = /rishi|guy|ryan|eric|christopher|brandon|davis|tony|jason|daniel|fred|thomas|oliver|prabhat|\bmale\b/i;
 
 function preferFemale(list) {
-  return list.find(v => FEMALE_NAMES.test(v.name)) || list[0] || null;
+  return list.find(v => FEMALE_NAMES.test(v.name))
+      || list.find(v => !MALE_NAMES.test(v.name))
+      || list[0]
+      || null;
 }
 
 function findIndiaVoice() {
