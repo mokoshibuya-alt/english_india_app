@@ -105,10 +105,14 @@
           </select>
         </div>
         <label class="autoplay-label">
-          <input type="checkbox" id="flow-loop-check" onchange="onFlowLoopChange(this.checked)">
-          最後まで行ったら最初から
+          <input type="checkbox" id="flow-shuffle-check" onchange="onFlowShuffleChange(this.checked)">
+          シャッフル(押すたびに順番を変える)
         </label>
-        <div class="voice-note">いま絞り込んでいるカードを、表示中のカードから順に流す。画面は消さずに(消すと止まる)</div>
+        <label class="autoplay-label">
+          <input type="checkbox" id="flow-loop-check" onchange="onFlowLoopChange(this.checked)">
+          1周したら止めずに続ける
+        </label>
+        <div class="voice-note">いま絞り込んでいるカードを流す。シャッフルなし=表示中のカードから順に(1周したあとは最初から)。画面は消さずに(消すと止まる)</div>
       </div>
 
       <div class="stats-bar">

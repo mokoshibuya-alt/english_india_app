@@ -122,6 +122,7 @@ function speak(text, btn, rate) {
 const FLOWS = ["en", "en-ja", "en-ja-en"];
 let flowRunning = false;
 let flowToken = 0;
+let flowFinished = false; // 1周流し終えて止まった直後か
 let wakeLock = null;
 
 function findJapaneseVoice() {
@@ -191,17 +192,39 @@ function toggleListenFlow() {
     return;
   }
   if (currentList.length === 0) return;
+  // 流す順番を決める。シャッフルなら毎回並べ直す。順番どおりなら表示中から(1周終わった後・最後のカードなら最初から)
+  let order;
+  if (state.flowShuffle) {
+    order = shuffledIndexes(currentList.length);
+  } else {
+    const start = (flowFinished || currentIndex >= currentList.length - 1) ? 0 : currentIndex;
+    order = [];
+    for (let i = start; i < currentList.length; i++) order.push(i);
+  }
+  flowFinished = false;
   flowRunning = true;
   flowToken++;
   updateFlowButton();
   requestWakeLock();
-  runListenFlow(flowToken);
+  runListenFlow(flowToken, order);
 }
 
-async function runListenFlow(token) {
+function shuffledIndexes(n) {
+  const a = [];
+  for (let i = 0; i < n; i++) a.push(i);
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+async function runListenFlow(token, order) {
   const flow = state.flow;
   let first = true;
+  let pos = 0;
   while (token === flowToken) {
+    currentIndex = order[pos];
     render({ fromFlow: true });
     window.scrollTo({ top: 0, behavior: "smooth" });
     const msg = currentList[currentIndex];
@@ -222,16 +245,18 @@ async function runListenFlow(token) {
     }
     if (!await wait(2000, token)) return;
 
-    if (currentIndex < currentList.length - 1) {
-      currentIndex++;
+    persistPosition();
+    if (pos < order.length - 1) {
+      pos++;
     } else if (state.flowLoop) {
-      currentIndex = 0;
+      // 2周目へ。シャッフルなら並べ直し、順番どおりなら最初から全部
+      order = state.flowShuffle ? shuffledIndexes(currentList.length) : [...Array(currentList.length).keys()];
+      pos = 0;
     } else {
-      persistPosition();
       stopListenFlow();
+      flowFinished = true;
       return;
     }
-    persistPosition();
   }
 }
 
@@ -248,6 +273,11 @@ function onFlowChange(value) {
 
 function onFlowLoopChange(checked) {
   state.flowLoop = checked;
+  saveState();
+}
+
+function onFlowShuffleChange(checked) {
+  state.flowShuffle = checked;
   saveState();
 }
 
@@ -323,7 +353,8 @@ function defaultState() {
     rate: 0.85,
     autoplay: true,
     flow: "en-ja",
-    flowLoop: true,
+    flowLoop: false,
+    flowShuffle: true,
     lastIds: { study: null, all: null, new: null, review: null, ok: null },
     updatedAt: 0
   };
@@ -350,7 +381,8 @@ function loadState() {
       rate: RATES.includes(String(loaded.rate)) ? Number(loaded.rate) : def.rate,
       autoplay: typeof loaded.autoplay === "boolean" ? loaded.autoplay : def.autoplay,
       flow: FLOWS.includes(loaded.flow) ? loaded.flow : def.flow,
-      flowLoop: typeof loaded.flowLoop === "boolean" ? loaded.flowLoop : def.flowLoop,
+      flowLoop: typeof loaded.flowLoop2 === "boolean" ? loaded.flowLoop2 : def.flowLoop,
+      flowShuffle: typeof loaded.flowShuffle === "boolean" ? loaded.flowShuffle : def.flowShuffle,
       lastIds: Object.assign({}, def.lastIds, loaded.lastIds || {}),
       updatedAt: typeof loaded.updatedAt === "number" ? loaded.updatedAt : 0
     };
@@ -361,7 +393,7 @@ function loadState() {
 
 function saveState() {
   state.updatedAt = Date.now();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(Object.assign({}, state, { flowLoop2: state.flowLoop })));
 }
 
 function getStatus(id) {
@@ -700,7 +732,7 @@ function render(opts) {
     const word = typeof v === "string" ? v : v.term;
     const term = getTerm(word) || {};
     const meaning = (typeof v === "object" && v.meaning) ? v.meaning : (term.meaning || "");
-    const kana = term.katakana || "";
+    const kana = (typeof v === "object" && v.katakana) ? v.katakana : (term.katakana || "");
     return `<div class="vocab-item">
       <button class="speak-btn speak-btn-sm" id="vocab-speak-${i}"
               onclick="speakWord(${i})" title="${word} を読み上げる">🔊</button>
@@ -802,6 +834,7 @@ function syncControls() {
   document.getElementById("autoplay-check").checked = state.autoplay;
   document.getElementById("flow-select").value = state.flow;
   document.getElementById("flow-loop-check").checked = state.flowLoop;
+  document.getElementById("flow-shuffle-check").checked = state.flowShuffle;
 }
 
 let state = loadState();
