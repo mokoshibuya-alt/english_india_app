@@ -116,18 +116,156 @@ function speak(text, btn, rate) {
   speechSynthesis.speak(utter);
 }
 
+// =====================================================
+// 聞き流し: 絞り込み中のカードを順に自動で読む
+// =====================================================
+const FLOWS = ["en", "en-ja", "en-ja-en"];
+let flowRunning = false;
+let flowToken = 0;
+let wakeLock = null;
+
+function findJapaneseVoice() {
+  if (!window.speechSynthesis) return null;
+  const ja = speechSynthesis.getVoices().filter(v => normLang(v).startsWith("ja"));
+  return preferFemale(ja);
+}
+
+function wait(ms, token) {
+  return new Promise(resolve => setTimeout(resolve, ms)).then(() => token === flowToken);
+}
+
+// 読み終わるまで待つ。iPhoneで onend が来ないことがあるので、文の長さから決めた上限でも進む
+function speakAndWait(text, lang, rate, token) {
+  return new Promise(resolve => {
+    if (token !== flowToken) return resolve(false);
+    const utter = new SpeechSynthesisUtterance(text);
+    if (lang === "ja") {
+      const jv = findJapaneseVoice();
+      if (jv) utter.voice = jv;
+      utter.lang = jv ? jv.lang : "ja-JP";
+      utter.rate = 1.0;
+    } else {
+      const v = pickVoice();
+      if (v) { utter.voice = v; utter.lang = v.lang; } else { utter.lang = "en-US"; }
+      utter.rate = rate;
+    }
+    let done = false;
+    const finish = () => { if (!done) { done = true; resolve(token === flowToken); } };
+    utter.onend = finish;
+    utter.onerror = finish;
+    setTimeout(finish, 3000 + text.length * 180 / (utter.rate || 1));
+    speechSynthesis.speak(utter);
+  });
+}
+
+async function requestWakeLock() {
+  try {
+    if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
+  } catch (e) { wakeLock = null; }
+}
+
+function releaseWakeLock() {
+  try { if (wakeLock) wakeLock.release(); } catch (e) {}
+  wakeLock = null;
+}
+
+function updateFlowButton() {
+  const btn = document.getElementById("btn-flow");
+  btn.textContent = flowRunning ? "■ 止める" : "🎧 聞き流し ▶";
+  btn.classList.toggle("playing", flowRunning);
+}
+
+function stopListenFlow() {
+  if (!flowRunning) return;
+  flowRunning = false;
+  flowToken++;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  releaseWakeLock();
+  updateFlowButton();
+}
+
+function toggleListenFlow() {
+  if (flowRunning) { stopListenFlow(); return; }
+  if (!window.speechSynthesis) {
+    alert("このブラウザは音声読み上げに対応していません。Edge か Chrome で開いてください。");
+    return;
+  }
+  if (currentList.length === 0) return;
+  flowRunning = true;
+  flowToken++;
+  updateFlowButton();
+  requestWakeLock();
+  runListenFlow(flowToken);
+}
+
+async function runListenFlow(token) {
+  const flow = state.flow;
+  let first = true;
+  while (token === flowToken) {
+    render({ fromFlow: true });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    const msg = currentList[currentIndex];
+    const rate = state.rate || 0.85;
+
+    // 1本目は待たずに読む(iPhoneはボタンを押した瞬間に鳴らさないと音が出ない)
+    if (!first && !await wait(400, token)) return;
+    first = false;
+    if (!await speakAndWait(msg.english, "en", rate, token)) return;
+    if (flow !== "en") {
+      if (!await wait(1500, token)) return;
+      reveal();
+      if (!await speakAndWait(msg.japanese, "ja", 1.0, token)) return;
+      if (flow === "en-ja-en") {
+        if (!await wait(1000, token)) return;
+        if (!await speakAndWait(msg.english, "en", rate, token)) return;
+      }
+    }
+    if (!await wait(2000, token)) return;
+
+    if (currentIndex < currentList.length - 1) {
+      currentIndex++;
+    } else if (state.flowLoop) {
+      currentIndex = 0;
+    } else {
+      persistPosition();
+      stopListenFlow();
+      return;
+    }
+    persistPosition();
+  }
+}
+
+// 画面に戻ってきたら、画面ロックを取り直す(切り替えで外れるため)
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && flowRunning) requestWakeLock();
+});
+
+function onFlowChange(value) {
+  state.flow = FLOWS.includes(value) ? value : "en-ja";
+  saveState();
+  if (flowRunning) { stopListenFlow(); toggleListenFlow(); }
+}
+
+function onFlowLoopChange(checked) {
+  state.flowLoop = checked;
+  saveState();
+}
+
 function speakFull() {
+  stopListenFlow();
   if (currentList.length === 0) return;
   const btn = revealed ? document.getElementById("speak-full") : document.getElementById("btn-listen");
   speak(currentList[currentIndex].english, btn, state.rate);
 }
 
 function speakSlow() {
+  stopListenFlow();
   if (currentList.length === 0) return;
   speak(currentList[currentIndex].english, document.getElementById("btn-listen-slow"), 0.6);
 }
 
 function speakWord(index) {
+  stopListenFlow();
   if (currentList.length === 0) return;
   const v = currentList[currentIndex].vocabulary[index];
   const word = typeof v === "string" ? v : v.term;
@@ -184,6 +322,8 @@ function defaultState() {
     voice: "india",
     rate: 0.85,
     autoplay: true,
+    flow: "en-ja",
+    flowLoop: true,
     lastIds: { study: null, all: null, new: null, review: null, ok: null },
     updatedAt: 0
   };
@@ -209,6 +349,8 @@ function loadState() {
       voice: typeof loaded.voice === "string" ? loaded.voice : def.voice,
       rate: RATES.includes(String(loaded.rate)) ? Number(loaded.rate) : def.rate,
       autoplay: typeof loaded.autoplay === "boolean" ? loaded.autoplay : def.autoplay,
+      flow: FLOWS.includes(loaded.flow) ? loaded.flow : def.flow,
+      flowLoop: typeof loaded.flowLoop === "boolean" ? loaded.flowLoop : def.flowLoop,
       lastIds: Object.assign({}, def.lastIds, loaded.lastIds || {}),
       updatedAt: typeof loaded.updatedAt === "number" ? loaded.updatedAt : 0
     };
@@ -499,6 +641,9 @@ function cover() {
 function render(opts) {
   opts = opts || {};
 
+  // 手で前後・絞り込み・状態変更をしたら、聞き流しは止める
+  if (!opts.fromFlow) stopListenFlow();
+
   if (window.speechSynthesis) {
     speechSynthesis.cancel();
     document.querySelectorAll(".speak-btn").forEach(b => b.classList.remove("speaking"));
@@ -655,6 +800,8 @@ function syncControls() {
   document.getElementById("role-select").value = state.role;
   document.getElementById("rate-select").value = String(state.rate);
   document.getElementById("autoplay-check").checked = state.autoplay;
+  document.getElementById("flow-select").value = state.flow;
+  document.getElementById("flow-loop-check").checked = state.flowLoop;
 }
 
 let state = loadState();

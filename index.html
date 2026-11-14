@@ -93,6 +93,24 @@
         <div class="voice-note" id="voice-note"></div>
       </div>
 
+      <!-- 聞き流し -->
+      <div class="voice-bar listen-flow-bar">
+        <button class="btn-flow" id="btn-flow" onclick="toggleListenFlow()">🎧 聞き流し ▶</button>
+        <div class="field-group">
+          <label for="flow-select" class="control-label">流し方</label>
+          <select id="flow-select" class="mode-select" onchange="onFlowChange(this.value)">
+            <option value="en">英語だけ</option>
+            <option value="en-ja">英語→日本語</option>
+            <option value="en-ja-en">英語→日本語→英語</option>
+          </select>
+        </div>
+        <label class="autoplay-label">
+          <input type="checkbox" id="flow-loop-check" onchange="onFlowLoopChange(this.checked)">
+          最後まで行ったら最初から
+        </label>
+        <div class="voice-note">いま絞り込んでいるカードを、表示中のカードから順に流す。画面は消さずに(消すと止まる)</div>
+      </div>
+
       <div class="stats-bar">
         <span class="stat-pill stat-pill-all">全件 <strong id="stat-all">0</strong></span>
         <span class="stat-pill stat-pill-new">新規 <strong id="stat-new">0</strong></span>
