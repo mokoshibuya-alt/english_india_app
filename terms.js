@@ -100,7 +100,22 @@ const terms = {
   "take a photo":     { meaning: "写真を撮る",                          katakana: "テイク ア フォト" },
   "selfie":           { meaning: "自撮り",                              katakana: "セルフィー" },
   "picture of us":    { meaning: "私たちの写真",                        katakana: "ピクチャー オブ アス" },
-  "close":            { meaning: "閉まる",                              katakana: "クローズ" }
+  "close":            { meaning: "閉まる",                              katakana: "クローズ" },
+
+  // ---- 雑談 (2026-11-14) ----
+  "which country":    { meaning: "どこの国",                            katakana: "ウィッチ カントリー" },
+  "traveling together": { meaning: "一緒に旅行している",                katakana: "トラベリング トゥゲザー" },
+  "married":          { meaning: "結婚している",                        katakana: "マリード" },
+  "children":         { meaning: "子どもたち",                          katakana: "チルドレン" },
+  "daughter":         { meaning: "娘",                                  katakana: "ドーター" },
+  "profession":       { meaning: "職業",                                katakana: "プロフェッション" },
+  "work with":        { meaning: "〜を扱う仕事をする",                  katakana: "ワーク ウィズ" },
+  "practice":         { meaning: "実践する・習っている",                katakana: "プラクティス" },
+  "interested in":    { meaning: "〜に関心がある",                      katakana: "インタレスティッド イン" },
+  "Vedanta":          { meaning: "ヴェーダーンタ(インド哲学)",          katakana: "ヴェーダーンタ" },
+  "monk":             { meaning: "お坊さん・僧侶",                      katakana: "マンク" },
+  "how do you find":  { meaning: "〜をどう感じますか(インドでよく使う)", katakana: "ハウ ドゥ ユー ファインド" },
+  "nice talking to you": { meaning: "お話できてよかった",               katakana: "ナイス トーキング トゥ ユー" }
 };
 
 function getTerm(key) {

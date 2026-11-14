@@ -633,5 +633,128 @@ const messages = [
     explanation: "遺跡や博物館は早く閉まる所や、曜日で休みの所がある(タージ・マハルは金曜休み)。",
     vocabulary: ["what time", "close"],
     learningTip: "開く時間なら「What time does it open?」。it は場所を指している。"
+  },
+
+  // ===== 雑談 (2026-11-14 現地の人と・お坊さんが同行するかも) =====
+  {
+    id: 56,
+    role: "listen",
+    scene: "雑談",
+    english: "Which country you are from?",
+    japanese: "どこの国から来たの?",
+    context: ["雑談", "インド英語"],
+    explanation: "インドで一番よく聞かれる。語順が Which country are you from? から崩れているが、よくある形。",
+    vocabulary: ["which country"],
+    learningTip: "短く「Which country?」だけのことも多い。「Japan.」の一語で会話が始まる。"
+  },
+  {
+    id: 57,
+    role: "say",
+    scene: "雑談",
+    english: "We're from Japan. We're friends, traveling together.",
+    japanese: "日本から来ました。友達同士で旅行しています",
+    context: ["雑談"],
+    explanation: "二人の関係を聞かれる前に言ってしまう一言。姉妹?と聞かれることもある。",
+    vocabulary: ["traveling together"],
+    learningTip: "「〜 together」で「一緒に〜」。We're friends. だけでも十分通じる。"
+  },
+  {
+    id: 58,
+    role: "listen",
+    scene: "雑談",
+    english: "Are you married? How many children?",
+    japanese: "結婚してるの?子どもは何人?",
+    context: ["雑談", "インド英語"],
+    explanation: "インドでは初対面でも家族のことをよく聞かれる。詮索ではなく、親しくなるための普通の話題。",
+    vocabulary: ["married", "children"],
+    learningTip: "答えたくなければ笑って「I have a daughter.」など、言いたいところだけ返せばよい。"
+  },
+  {
+    id: 59,
+    role: "say",
+    scene: "雑談",
+    english: "I have a daughter. She's in Japan.",
+    japanese: "娘が一人います。日本にいます",
+    context: ["雑談"],
+    explanation: "58番への返事。家族の話は喜ばれるので、スマホの写真を見せると話が続く。",
+    vocabulary: ["daughter"],
+    learningTip: "「I have 〜」で家族を言う。息子なら son、姉妹なら sister。"
+  },
+  {
+    id: 60,
+    role: "listen",
+    scene: "雑談",
+    english: "What is your profession?",
+    japanese: "お仕事は何ですか",
+    context: ["雑談", "インド英語"],
+    explanation: "インドでは仕事を聞くとき profession(職業)をよく使う。What do you do? と同じ意味。",
+    vocabulary: ["profession"],
+    learningTip: "返事は「I work for a company.」で十分。中身を言うなら「I work with data.」。"
+  },
+  {
+    id: 61,
+    role: "say",
+    scene: "雑談",
+    english: "I work with data at a company.",
+    japanese: "会社でデータの仕事をしています",
+    context: ["雑談"],
+    explanation: "60番への返事。IT の話が好きな人も多いので、ここから話が広がることもある。",
+    vocabulary: ["work with", "data"],
+    learningTip: "「work with 〜」で「〜を扱う仕事」。work with people / work with numbers。"
+  },
+  {
+    id: 62,
+    role: "say",
+    scene: "雑談",
+    english: "I practice yoga in Japan.",
+    japanese: "日本でヨガをしています",
+    context: ["雑談"],
+    explanation: "インドの人は喜んで食いついてくれる話題。どんな流派かと聞かれることもある。",
+    vocabulary: ["practice"],
+    learningTip: "習いごとは practice(実践する)を使うと自然。I do yoga. でも通じる。"
+  },
+  {
+    id: 63,
+    role: "say",
+    scene: "雑談",
+    english: "I'm interested in Vedanta.",
+    japanese: "ヴェーダーンタに関心があります",
+    context: ["雑談"],
+    explanation: "インドの哲学の話を始める一言。詳しい人に会うと、向こうから話してくれる。",
+    vocabulary: ["interested in", "Vedanta"],
+    learningTip: "「I'm interested in 〜」で「〜に関心がある」。Indian food / temples でも使える。"
+  },
+  {
+    id: 64,
+    role: "say",
+    scene: "雑談",
+    english: "Our friend is a monk.",
+    japanese: "友人はお坊さんです",
+    context: ["雑談"],
+    explanation: "同行者を紹介するとき。お寺や聖地では、僧侶と一緒だと扱いが変わることもある。",
+    vocabulary: ["monk"],
+    learningTip: "monk(マンク)は「お坊さん・修道士」。日本の僧侶なら a Japanese monk。"
+  },
+  {
+    id: 65,
+    role: "listen",
+    scene: "雑談",
+    english: "How do you find India?",
+    japanese: "インドはどうですか",
+    context: ["雑談", "インド英語"],
+    explanation: "find は「見つける」ではなく「どう感じるか」。インドの人がよく使う聞き方。How do you like India? と同じ。",
+    vocabulary: ["how do you find"],
+    learningTip: "返事は「I love it.」「Everyone is so kind.」など一言でよい。"
+  },
+  {
+    id: 66,
+    role: "say",
+    scene: "雑談",
+    english: "Nice talking to you.",
+    japanese: "お話できてよかったです",
+    context: ["雑談"],
+    explanation: "雑談の締め。立ち去るきっかけにもなる。",
+    vocabulary: ["nice talking to you"],
+    learningTip: "初対面の挨拶は Nice to meet you、別れ際は Nice talking to you。"
   }
 ];
