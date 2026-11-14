@@ -348,5 +348,290 @@ const messages = [
     explanation: "帰国する人への見送り。「Safe journey」はインドでよく聞く。アメリカなら「Have a safe trip」。",
     vocabulary: ["take care", "journey"],
     learningTip: "「Take care.」は別れの挨拶の定番。返事も「You too.」で十分。"
+  },
+
+  // ---- バッチ 2: 旅行の場面 25本 (2026-11-14 年末の旅行用) ----
+
+  // ===== ホテル =====
+  {
+    id: 31,
+    role: "listen",
+    scene: "ホテル",
+    english: "Your good name, ma'am?",
+    japanese: "お名前は?",
+    context: ["ホテル", "インド英語"],
+    explanation: "チェックインで名前を聞かれるときの言い方。good に意味はなく、丁寧に聞いているだけ。",
+    vocabulary: ["good name", "ma'am"],
+    learningTip: "「What is your good name?」はインド特有の丁寧な聞き方。名字か名前をそのまま答えればよい。"
+  },
+  {
+    id: 32,
+    role: "listen",
+    scene: "ホテル",
+    english: "Kindly fill this form and show your passport.",
+    japanese: "この用紙に記入して、パスポートを見せてください",
+    context: ["ホテル", "インド英語"],
+    explanation: "外国人はチェックインで用紙とパスポート(ビザのページも)を求められる。",
+    vocabulary: ["kindly", "fill this form"],
+    learningTip: "インドでは please の代わりに kindly をよく使う。聞いたら「お願いされている」と分かればよい。"
+  },
+  {
+    id: 33,
+    role: "say",
+    scene: "ホテル",
+    english: "Is breakfast included?",
+    japanese: "朝食は付いていますか",
+    context: ["ホテル"],
+    explanation: "チェックインのときに聞いておく。何時から何時まで、と続けて聞くなら What time is breakfast?",
+    vocabulary: ["included"],
+    learningTip: "「Is 〜 included?」=「〜は込みですか」。Wi-Fi や税金(tax)でも使える。"
+  },
+  {
+    id: 34,
+    role: "say",
+    scene: "ホテル",
+    english: "What time is checkout?",
+    japanese: "チェックアウトは何時ですか",
+    context: ["ホテル"],
+    explanation: "インドのホテルは正午(12時)が多いが、宿による。最終日の予定を組む前に聞く。",
+    vocabulary: ["what time", "checkout"],
+    learningTip: "「What time is 〜?」で「〜は何時?」。朝食・出発・閉館、なんでも入る。"
+  },
+  {
+    id: 35,
+    role: "say",
+    scene: "ホテル",
+    english: "The AC is not working. Could you check it?",
+    japanese: "エアコンが動きません。見てもらえますか",
+    context: ["ホテル"],
+    explanation: "部屋の不具合を伝える。インドではエアコンを AC(エーシー)と呼ぶ。お湯なら hot water。",
+    vocabulary: ["AC", "not working"],
+    learningTip: "「〜 is not working.」で「〜が動かない・壊れている」。The shower / The light に替えて使い回せる。"
+  },
+  {
+    id: 36,
+    role: "say",
+    scene: "ホテル",
+    english: "Can we leave our luggage here?",
+    japanese: "荷物をここに預けてもいいですか",
+    context: ["ホテル"],
+    explanation: "チェックアウト後に観光する日や、早く着いた日に。二人旅なので we / our。",
+    vocabulary: ["leave", "luggage"],
+    learningTip: "leave は「置いていく」。「Can we 〜?」は「〜してもいい?」で、二人分の許可を取る型。"
+  },
+
+  // ===== 街歩き・オート =====
+  {
+    id: 37,
+    role: "say",
+    scene: "街歩き・オート",
+    english: "How much to the station?",
+    japanese: "駅までいくらですか",
+    context: ["街歩き・オート"],
+    explanation: "オートリキシャ(auto)やタクシーに乗る前に、必ず値段を決めてから乗る。",
+    vocabulary: ["how much", "to the station"],
+    learningTip: "「How much to 〜?」で「〜までいくら?」。行き先だけ入れ替えれば全部の移動に使える。"
+  },
+  {
+    id: 38,
+    role: "say",
+    scene: "街歩き・オート",
+    english: "Please go by meter.",
+    japanese: "メーターで行ってください",
+    context: ["街歩き・オート", "インド英語"],
+    explanation: "メーターがあるのに使わず、高い言い値を出されることがある。断られたら値段を決めてから乗るか、別の車にする。",
+    vocabulary: ["by meter"],
+    learningTip: "「by meter」はインドで通じる言い方。アプリ(Uber・Ola)で呼ぶと値段が先に決まるので交渉がいらない。"
+  },
+  {
+    id: 39,
+    role: "listen",
+    scene: "街歩き・オート",
+    english: "Ma'am, where you are going?",
+    japanese: "どちらへ行きますか",
+    context: ["街歩き・オート", "インド英語"],
+    explanation: "駅前や観光地で運転手に声をかけられる。語順が where are you going から崩れているのはよくあること。",
+    vocabulary: ["ma'am", "where"],
+    learningTip: "乗る気がなければ「No, thank you.」で歩き続ければよい。立ち止まると話が続く。"
+  },
+  {
+    id: 40,
+    role: "say",
+    scene: "街歩き・オート",
+    english: "Is it walking distance?",
+    japanese: "歩いて行ける距離ですか",
+    context: ["街歩き・オート"],
+    explanation: "ホテルの人や店の人に道を聞くとき。遠ければオートを勧めてくれる。",
+    vocabulary: ["walking distance"],
+    learningTip: "「walking distance」=「歩ける距離」。「It's five minutes' walk.」の形で返ってくることが多い。"
+  },
+  {
+    id: 41,
+    role: "listen",
+    scene: "街歩き・オート",
+    english: "Go straight, then take a left.",
+    japanese: "まっすぐ行って、左に曲がって",
+    context: ["街歩き・オート"],
+    explanation: "道を教えてもらうときの定番。インドでは首を横に揺らしながら言われることもあるが、No ではない。",
+    vocabulary: ["go straight", "take a left"],
+    learningTip: "「take a left / take a right」=「左へ・右へ曲がる」。turn left と同じ意味。"
+  },
+  {
+    id: 42,
+    role: "say",
+    scene: "街歩き・オート",
+    english: "Please stop here.",
+    japanese: "ここで止めてください",
+    context: ["街歩き・オート"],
+    explanation: "目的地の手前で降りたいとき。払うときは釣り銭が出ないことがあるので、小さいお札を用意しておく。",
+    vocabulary: ["stop here"],
+    learningTip: "短く「Here is fine.」でも通じる。「ここで大丈夫」の意味。"
+  },
+
+  // ===== 買い物 =====
+  {
+    id: 43,
+    role: "say",
+    scene: "買い物",
+    english: "How much is this?",
+    japanese: "これはいくらですか",
+    context: ["買い物"],
+    explanation: "値札のない店では、まずこれ。指さしながら言えば十分。",
+    vocabulary: ["how much"],
+    learningTip: "複数なら「How much are these?」。値段は「rupees(ルピー)」で返ってくる。"
+  },
+  {
+    id: 44,
+    role: "say",
+    scene: "買い物",
+    english: "I'm just looking, thank you.",
+    japanese: "見ているだけです",
+    context: ["買い物"],
+    explanation: "店員がすぐに寄ってくるので、断りの一言を持っておく。笑顔で言えば角が立たない。",
+    vocabulary: ["just looking"],
+    learningTip: "「just 〜ing」で「〜しているだけ」。最後の thank you で柔らかくなる。"
+  },
+  {
+    id: 45,
+    role: "say",
+    scene: "買い物",
+    english: "That's too expensive. What's your last price?",
+    japanese: "高すぎます。いくらまで下げられますか",
+    context: ["買い物", "インド英語"],
+    explanation: "市場や土産物屋は値段交渉が前提。「last price」は「最終価格=これ以上下げられない値段」で、インドの交渉の決まり文句。",
+    vocabulary: ["too expensive", "last price"],
+    learningTip: "最初の言い値の半分くらいから始めて、間で決まることが多い。決裂したら店を出るのも交渉のうち。"
+  },
+  {
+    id: 46,
+    role: "listen",
+    scene: "買い物",
+    english: "Fixed price, ma'am. No bargaining.",
+    japanese: "定価です。値引きはしません",
+    context: ["買い物"],
+    explanation: "デパートや国営の店(エンポリアム)は定価。ここでは交渉しない。",
+    vocabulary: ["fixed price", "bargaining"],
+    learningTip: "bargain は「値切る」。fixed price と聞いたら交渉の場ではない、と切り替える。"
+  },
+  {
+    id: 47,
+    role: "say",
+    scene: "買い物",
+    english: "If I buy two, can you give me a discount?",
+    japanese: "二つ買ったら、まけてくれますか",
+    context: ["買い物"],
+    explanation: "二人で同じものを買うときの交渉。まとめ買いは値引きの口実になりやすい。",
+    vocabulary: ["if I buy", "discount"],
+    learningTip: "「If I 〜, can you 〜?」は「〜したら、〜してくれる?」の交渉の型。"
+  },
+  {
+    id: 48,
+    role: "say",
+    scene: "買い物",
+    english: "Can I pay by card?",
+    japanese: "カードで払えますか",
+    context: ["買い物"],
+    explanation: "小さい店は現金かUPI(インドのスマホ決済)だけのことが多い。払う前に聞く。",
+    vocabulary: ["pay by card"],
+    learningTip: "「by card / in cash」で支払い方法。cash は by ではなく in を使う。"
+  },
+  {
+    id: 49,
+    role: "listen",
+    scene: "買い物",
+    english: "Only cash or UPI, ma'am.",
+    japanese: "現金かUPIだけです",
+    context: ["買い物", "インド英語"],
+    explanation: "48番への返事でよく聞く。UPI(ユーピーアイ)はQRで払うインドの決済。旅行者は使えないことが多いので、現金を持っておく。",
+    vocabulary: ["cash", "UPI"],
+    learningTip: "「Only 〜」を頭に置くと「〜だけ」。インドでは文の最後に only を付けて強める言い方もある(cash only)。"
+  },
+
+  // ===== 観光 =====
+  {
+    id: 50,
+    role: "say",
+    scene: "観光",
+    english: "Two tickets, please.",
+    japanese: "チケット2枚ください",
+    context: ["観光"],
+    explanation: "窓口で。遺跡や博物館は外国人料金(foreigner)が別にあり、インド人料金より高い。",
+    vocabulary: ["ticket"],
+    learningTip: "数+名詞+please で注文は全部できる。「Two chai, please.」でも同じ。"
+  },
+  {
+    id: 51,
+    role: "listen",
+    scene: "観光",
+    english: "Please remove your footwear here.",
+    japanese: "ここで履物を脱いでください",
+    context: ["観光", "インド英語"],
+    explanation: "寺院やモスクの入口で言われる。靴を預ける場所があり、少額のお礼を払うことも。",
+    vocabulary: ["remove", "footwear"],
+    learningTip: "インドでは shoes より footwear(履物)をよく使う。サンダルも含む言い方。"
+  },
+  {
+    id: 52,
+    role: "say",
+    scene: "観光",
+    english: "Can I take a photo here?",
+    japanese: "ここで写真を撮ってもいいですか",
+    context: ["観光"],
+    explanation: "寺院の中や博物館は撮影禁止や撮影料が必要な場所がある。迷ったら聞く。",
+    vocabulary: ["take a photo"],
+    learningTip: "人を撮るときも「Can I take a photo of you?」と聞いてから。"
+  },
+  {
+    id: 53,
+    role: "listen",
+    scene: "観光",
+    english: "Ma'am, one selfie, please?",
+    japanese: "一緒に自撮りしてもいいですか",
+    context: ["観光", "インド英語"],
+    explanation: "観光地で外国人はよく写真をせがまれる。嫌なら断ってよい。",
+    vocabulary: ["selfie"],
+    learningTip: "断るなら「Sorry, no photos.」、応じるなら「OK, just one.」。どちらも短くて通じる。"
+  },
+  {
+    id: 54,
+    role: "say",
+    scene: "観光",
+    english: "Could you take a picture of us?",
+    japanese: "私たちの写真を撮ってもらえますか",
+    context: ["観光"],
+    explanation: "二人で写りたいときに。スマホを渡すなら、周りの家族連れや係員に頼むのが安心。",
+    vocabulary: ["could you", "picture of us"],
+    learningTip: "「of us」で「私たちの」。一人なら「of me」。"
+  },
+  {
+    id: 55,
+    role: "say",
+    scene: "観光",
+    english: "What time does it close?",
+    japanese: "何時に閉まりますか",
+    context: ["観光"],
+    explanation: "遺跡や博物館は早く閉まる所や、曜日で休みの所がある(タージ・マハルは金曜休み)。",
+    vocabulary: ["what time", "close"],
+    learningTip: "開く時間なら「What time does it open?」。it は場所を指している。"
   }
 ];

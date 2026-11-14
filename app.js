@@ -141,6 +141,10 @@ const contextColors = {
   "打ち合わせ": "#f3e8fd",
   "食事": "#fff3e0",
   "別れ・お礼": "#fce4ec",
+  "ホテル": "#e0f7fa",
+  "街歩き・オート": "#f1f8e9",
+  "買い物": "#fbe9e7",
+  "観光": "#ede7f6",
   "インド英語": "#fff8e1"
 };
 const contextTextColors = {
@@ -149,6 +153,10 @@ const contextTextColors = {
   "打ち合わせ": "#7b1fa2",
   "食事": "#e65100",
   "別れ・お礼": "#880e4f",
+  "ホテル": "#00838f",
+  "街歩き・オート": "#558b2f",
+  "買い物": "#bf360c",
+  "観光": "#4527a0",
   "インド英語": "#f57f17"
 };
 const ROLE_LABELS = { listen: "👂 相手が言う", say: "🗣 自分が言う" };
@@ -159,7 +167,7 @@ const ROLE_LABELS = { listen: "👂 相手が言う", say: "🗣 自分が言う
 const STORAGE_KEY = "english_india_app_state_v1";
 const MODES = ["study", "all", "new", "review", "ok"];
 const STATUS_LABELS = { new: "新規", review: "復習", ok: "OK" };
-const SCENES = ["all", "空港・移動", "オフィス", "打ち合わせ", "食事", "別れ・お礼"];
+const SCENES = ["all", "空港・移動", "オフィス", "打ち合わせ", "食事", "別れ・お礼", "ホテル", "街歩き・オート", "買い物", "観光"];
 const ROLES = ["all", "listen", "say"];
 const RATES = ["0.7", "0.85", "1.0"];
 
