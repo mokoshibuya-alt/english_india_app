@@ -113,6 +113,7 @@ function speak(text, btn, rate) {
     utter.onend  = () => btn.classList.remove("speaking");
     utter.onerror = () => btn.classList.remove("speaking");
   }
+  try { speechSynthesis.resume(); } catch (e) {}
   speechSynthesis.speak(utter);
 }
 
@@ -155,6 +156,8 @@ function speakAndWait(text, lang, rate, token) {
     utter.onend = finish;
     utter.onerror = finish;
     setTimeout(finish, 3000 + text.length * 180 / (utter.rate || 1));
+    // 読み上げが「一時停止」のまま固まることがある(スマホ)。毎回ほどいてから読む
+    try { speechSynthesis.resume(); } catch (e) {}
     speechSynthesis.speak(utter);
   });
 }
@@ -181,7 +184,7 @@ function updateFlowButton() {
 function scrollCardToTop() {
   const card = document.getElementById("card");
   const y = card.getBoundingClientRect().top + window.scrollY - 8;
-  window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+  window.scrollTo(0, Math.max(0, y));
 }
 
 function stopListenFlow() {
