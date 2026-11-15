@@ -983,3 +983,35 @@ kbd {
     height: 96px;
   }
 }
+
+/* ===== 聞き流し中: 英文を最初から見せ、聞くボタンとめくるは隠す ===== */
+body.flowing .listen-zone,
+body.flowing .reveal-wrap {
+  display: none;
+}
+body.flowing .card.covered .section-english {
+  display: block;
+}
+body.flowing main {
+  padding-bottom: 80px;
+}
+.btn-flow-float {
+  display: none;
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 50;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 999px;
+  background: #c62828;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+body.flowing .btn-flow-float {
+  display: block;
+}

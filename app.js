@@ -174,6 +174,14 @@ function updateFlowButton() {
   const btn = document.getElementById("btn-flow");
   btn.textContent = flowRunning ? "■ 止める" : "🎧 聞き流し ▶";
   btn.classList.toggle("playing", flowRunning);
+  // 流している間は英文を最初から見せ、カードを画面の上に置く(止めるボタンは下に浮かせる)
+  document.body.classList.toggle("flowing", flowRunning);
+}
+
+function scrollCardToTop() {
+  const card = document.getElementById("card");
+  const y = card.getBoundingClientRect().top + window.scrollY - 8;
+  window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
 }
 
 function stopListenFlow() {
@@ -226,7 +234,7 @@ async function runListenFlow(token, order) {
   while (token === flowToken) {
     currentIndex = order[pos];
     render({ fromFlow: true });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollCardToTop();
     const msg = currentList[currentIndex];
     const rate = state.rate || 0.85;
 
