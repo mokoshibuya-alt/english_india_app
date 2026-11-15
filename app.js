@@ -203,10 +203,11 @@ function toggleListenFlow() {
     return;
   }
   if (currentList.length === 0) return;
-  // 流す順番を決める。シャッフルなら毎回並べ直す。順番どおりなら表示中から(1周終わった後・最後のカードなら最初から)
+  // 流す順番を決める。シャッフルは同じ周のあいだは並びを保ち、止めたカードから続ける(1周終わったら並べ直す)。
+  // 順番どおりなら表示中から(1周終わった後・最後のカードなら最初から)
   let order;
   if (state.flowShuffle) {
-    order = shuffledIndexes(currentList.length);
+    order = resumeShuffleRound() || newShuffleRound();
   } else {
     const start = (flowFinished || currentIndex >= currentList.length - 1) ? 0 : currentIndex;
     order = [];
@@ -218,6 +219,29 @@ function toggleListenFlow() {
   updateFlowButton();
   requestWakeLock();
   runListenFlow(flowToken, order);
+}
+
+// 周を見分ける鍵: モード・場面・役が変わったら別の周
+function flowKey() {
+  return [state.mode, state.scene, state.role].join("|");
+}
+
+function newShuffleRound() {
+  const order = shuffledIndexes(currentList.length);
+  state.shuffleRound = { key: flowKey(), ids: order.map(i => currentList[i].id), pos: 0 };
+  saveState();
+  return order;
+}
+
+// 保存してある周の続き。絞り込みが変わった・新しいカードが混ざったときは null(並べ直す)
+function resumeShuffleRound() {
+  const r = state.shuffleRound;
+  if (!r || r.key !== flowKey()) return null;
+  const inRound = new Set(r.ids);
+  if (currentList.some(m => !inRound.has(m.id))) return null;
+  const idxById = new Map(currentList.map((m, i) => [m.id, i]));
+  const rest = r.ids.slice(r.pos).filter(id => idxById.has(id)).map(id => idxById.get(id));
+  return rest.length > 0 ? rest : null;
 }
 
 function shuffledIndexes(n) {
@@ -240,6 +264,11 @@ async function runListenFlow(token, order) {
     scrollCardToTop();
     const msg = currentList[currentIndex];
     const rate = state.rate || 0.85;
+    // シャッフルの周で、いまどのカードにいるかを覚える(止めたらここから続ける)
+    if (state.flowShuffle && state.shuffleRound) {
+      const at = state.shuffleRound.ids.indexOf(msg.id);
+      if (at >= 0) { state.shuffleRound.pos = at; saveState(); }
+    }
 
     // 1本目は待たずに読む(iPhoneはボタンを押した瞬間に鳴らさないと音が出ない)
     if (!first && !await wait(400, token)) return;
@@ -261,9 +290,12 @@ async function runListenFlow(token, order) {
       pos++;
     } else if (state.flowLoop) {
       // 2周目へ。シャッフルなら並べ直し、順番どおりなら最初から全部
-      order = state.flowShuffle ? shuffledIndexes(currentList.length) : [...Array(currentList.length).keys()];
+      order = state.flowShuffle ? newShuffleRound() : [...Array(currentList.length).keys()];
       pos = 0;
     } else {
+      // 1周終わり。次に押したら並べ直して1枚目から
+      state.shuffleRound = null;
+      saveState();
       stopListenFlow();
       flowFinished = true;
       return;
@@ -366,6 +398,7 @@ function defaultState() {
     flow: "en-ja",
     flowLoop: false,
     flowShuffle: true,
+    shuffleRound: null,
     lastIds: { study: null, all: null, new: null, review: null, ok: null },
     updatedAt: 0
   };
@@ -394,6 +427,9 @@ function loadState() {
       flow: FLOWS.includes(loaded.flow) ? loaded.flow : def.flow,
       flowLoop: typeof loaded.flowLoop2 === "boolean" ? loaded.flowLoop2 : def.flowLoop,
       flowShuffle: typeof loaded.flowShuffle === "boolean" ? loaded.flowShuffle : def.flowShuffle,
+      shuffleRound: (loaded.shuffleRound && typeof loaded.shuffleRound.key === "string" &&
+                     Array.isArray(loaded.shuffleRound.ids) && typeof loaded.shuffleRound.pos === "number")
+                    ? loaded.shuffleRound : null,
       lastIds: Object.assign({}, def.lastIds, loaded.lastIds || {}),
       updatedAt: typeof loaded.updatedAt === "number" ? loaded.updatedAt : 0
     };
